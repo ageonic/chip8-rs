@@ -22,6 +22,18 @@ impl CPU {
         }
     }
 
+    pub fn load(&mut self, bytes: &[u8]) {
+        for (i, &byte) in bytes.iter().enumerate() {
+            let address = 0x200 + i;
+
+            if address < 4096 {
+                self.memory[address] = byte;
+            } else {
+                break;
+            }
+        }
+    }
+
     pub fn read_instruction(&self) -> u16 {
         ((self.memory[self.pc] as u16) << 8) | self.memory[self.pc + 1] as u16
     }
