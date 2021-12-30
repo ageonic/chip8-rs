@@ -1,4 +1,4 @@
-use crate::instruction::Instruction;
+use crate::instruction::Opcode;
 
 #[derive(Debug)]
 pub struct CPU {
@@ -37,9 +37,9 @@ impl CPU {
     }
 
     pub fn execute(&mut self) {
-        let instruction = Instruction::new(self.read_instruction());
+        let opcode = self.get_current_opcode();
 
-        match instruction.as_nibbles() {
+        match opcode.as_nibbles() {
             (0x0, 0x0, 0xE, 0x0) => (),
             (0x0, 0x0, 0xE, 0xE) => (),
             (0x0, _, _, _) => (),
@@ -79,7 +79,8 @@ impl CPU {
         }
     }
 
-    pub fn read_instruction(&self) -> u16 {
-        ((self.memory[self.pc] as u16) << 8) | self.memory[self.pc + 1] as u16
+    fn get_current_opcode(&self) -> Opcode {
+        let raw_opcode = ((self.memory[self.pc] as u16) << 8) | self.memory[self.pc + 1] as u16;
+        Opcode::from(raw_opcode)
     }
 }
