@@ -1,12 +1,12 @@
 // Represents a deconstructed opcode
 #[derive(Debug)]
 pub struct Opcode {
-    pub category: usize,
-    pub x: usize,
-    pub y: usize,
-    pub n: usize,
-    pub nn: usize,
-    pub nnn: usize,
+    category: usize,
+    x: usize,
+    y: usize,
+    n: usize,
+    nn: usize,
+    nnn: usize,
     raw: u16,
 }
 
@@ -25,7 +25,15 @@ impl From<u16> for Opcode {
 }
 
 impl Opcode {
+    pub fn as_u16(&self) -> u16 {
+        self.raw
+    }
+
     pub fn as_nibbles(&self) -> (usize, usize, usize, usize) {
         (self.category, self.x, self.y, self.n)
+    }
+
+    pub fn as_destructured_params(&self) -> (usize, usize, usize, usize, usize) {
+        (self.x, self.y, self.n, self.nn, self.nnn)
     }
 }
